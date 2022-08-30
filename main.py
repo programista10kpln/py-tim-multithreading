@@ -11,7 +11,9 @@ class MyThread(threading.Thread):
 
     def run(self):
         print(f'Starting {self.name} \n')
+        threadLock.acquire()
         print_time(self.name, 1, self.count)
+        threadLock.release()
         print(f'Exiting {self.name} \n')
 
 
@@ -21,6 +23,9 @@ def print_time(name, delay, count):
         print("%s: %s %s" % (name, time.ctime(time.time()), count) + "\n")
         count -= 1
 
+
+# run thread2 after thread1 finishes its work
+threadLock = threading.Lock()
 
 thread1 = MyThread(1, "Thread1", 10)
 thread2 = MyThread(2, "Thread2", 5)
